@@ -6,13 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "json-server --watch src/data/jobs.json --port 8001"
   },
   "dependencies": {
     "@radix-ui/react-toast": "^1.1.5",
+    "@tanstack/vue-query": "^5.40.1",
+    "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "eslint-config-prettier": "^9.1.0",
+    "json-server": "^1.0.0-beta.1",
     "lucide-react": "^0.383.0",
     "lucide-vue-next": "^0.383.0",
     "radix-vue": "^1.8.3",

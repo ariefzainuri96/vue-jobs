@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import Toaster from "@/components/ui/toast/Toaster.vue";
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <template>
   <div class="min-h-screen w-screen overflow-hidden bg-white">
     <div class="flex w-full flex-col overflow-x-hidden">
-      <div class="bg-white">
+      <!-- <div class="bg-white">
         <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
-      </div>
+      </div> -->
+      <Navbar />
       <main class="flex flex-1 flex-col overflow-y-auto">
         <router-view />
         <Toaster />

@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>Add Page</div>
+  <div>jobs page</div>
 </template>
+
+<style scoped></style>
