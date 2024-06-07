@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { JobItem } from "@/data/model/job-item";
 import { computed, ref } from "vue";
+import MarkerIcon from "vue-material-design-icons/MapMarker.vue";
+import Button from "../ui/button/Button.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const showMore = ref(false);
 const props = defineProps<{
   job: JobItem;
@@ -13,6 +17,13 @@ const description = computed(() => {
   }
   return (props.job.description ?? "").slice(0, 100) + "...";
 });
+
+// create function to route to detail page
+const routeToDetail = () => {
+  router.push({
+    path: `/jobs/${props.job.id}`,
+  });
+};
 </script>
 
 <template>
@@ -27,5 +38,16 @@ const description = computed(() => {
         >{{ showMore ? "Show Less" : "Show More" }}</span
       >
     </p>
+    <p class="mt-4 text-sm text-indigo-600">{{ props.job.salary }}</p>
+    <div class="mt-2 h-[1px] w-full bg-slate-200" />
+    <div class="mt-2 flex flex-row items-center gap-1">
+      <marker-icon :size="24" class="icon text-red-600" />
+      <p class="text-sm font-semibold text-red-600">{{ props.job.location }}</p>
+    </div>
+    <Button
+      @click="routeToDetail"
+      class="mt-4 w-full bg-indigo-600 text-white hover:bg-indigo-700"
+      >Read More</Button
+    >
   </div>
 </template>

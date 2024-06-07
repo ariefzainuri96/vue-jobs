@@ -60,7 +60,7 @@ watchEffect(() => {
           :onActionClick="onBrowseJobsClick"
         />
         <ActiondashboardCard
-          className="bg-indigo-200"
+          className="bg-indigo-100"
           class="bg-indigo-600 hover:bg-indigo-700"
           title="For Employers"
           description="List your job to find the perfect developer for the role"

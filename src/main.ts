@@ -4,6 +4,7 @@ import App from "./App.vue";
 import AddJobPage from "./pages/AddJobPage.vue";
 import JobsPage from "./pages/JobsPage.vue";
 import DashboardPage from "./pages/dashboard/DashboardPage.vue";
+import JobsDetailPage from "./pages/JobsDetailPage.vue";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { VueQueryPlugin } from "@tanstack/vue-query";
@@ -30,6 +31,11 @@ const routes = [
         path: "/jobs",
         name: "Jobs",
         component: JobsPage,
+      },
+      {
+        path: "/jobs/:id",
+        name: "Jobs Detail",
+        component: JobsDetailPage,
       },
     ],
   },
