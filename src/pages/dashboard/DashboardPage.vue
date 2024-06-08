@@ -19,7 +19,6 @@ const onScrollEvent = (e: Event) => {
 
 watchEffect(() => {
   if (localStorage.getItem("scrollPosition") && divRef.value) {
-    console.log("watchEffect");
     divRef.value.scrollTop = parseInt(
       `${localStorage.getItem("scrollPosition")}`,
     );
@@ -34,7 +33,6 @@ watchEffect(() => {
     :onScroll="onScrollEvent"
     class="flex flex-col overflow-y-auto"
   >
-    <div class="h-[0.5px] w-full bg-stone-100" />
     <!-- hero -->
     <section>
       <div
@@ -71,7 +69,7 @@ watchEffect(() => {
     </section>
     <!-- jobs -->
     <section class="mt-6">
-      <BrowseJobs />
+      <BrowseJobs :is-home="true" />
     </section>
   </div>
 </template>

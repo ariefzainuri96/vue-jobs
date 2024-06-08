@@ -7,7 +7,7 @@ import { RouterView } from "vue-router";
 <template>
   <div class="flex h-screen w-screen flex-col overflow-hidden bg-white">
     <Navbar />
-    <RouterView class="w-full flex-1 overflow-y-auto" />
+    <RouterView class="w-full flex-1" />
     <Toaster />
   </div>
 </template>
