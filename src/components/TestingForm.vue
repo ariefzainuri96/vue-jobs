@@ -4,10 +4,15 @@ import { ref } from "vue";
 type TForm = {
   name?: string;
   age?: number;
+  size?: number;
 };
 
 const form = ref<TForm | null>();
-const updateForm = (_form: TForm) => (form.value = _form);
+
+const handleChange = (e: Event) => {
+  const { name, value } = e.target as HTMLInputElement | HTMLTextAreaElement;
+  form.value = { ...form.value, [name]: value };
+};
 
 const submit = () => {
   console.log(form.value);
@@ -22,13 +27,8 @@ const submit = () => {
         type="text"
         id="name"
         :value="form?.name"
-        @input="
-          (e) =>
-            updateForm({
-              ...form,
-              name: (e.target as HTMLInputElement)?.value,
-            })
-        "
+        @input="handleChange"
+        name="name"
         placeholder="Enter your name"
       />
     </div>
@@ -37,15 +37,21 @@ const submit = () => {
       <input
         type="number"
         :value="form?.age"
-        @input="
-          (event) =>
-            updateForm({
-              ...form,
-              age: Number((event.target as HTMLInputElement)?.value),
-            })
-        "
+        @input="handleChange"
+        name="age"
         id="age"
         placeholder="Enter your age"
+      />
+    </div>
+    <div class="flex flex-col">
+      <label for="size">Clothes Size</label>
+      <input
+        type="number"
+        @input="handleChange"
+        :value="form?.size"
+        name="size"
+        id="size"
+        placeholder="Enter your size"
       />
     </div>
 
