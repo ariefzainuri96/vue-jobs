@@ -2,11 +2,15 @@
 import { SelectItem } from "@/data/model/select-item";
 import CustomSelect from "./CustomSelect.vue";
 import { JobItem } from "@/data/model/job-item";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Button from "./ui/button/Button.vue";
 import CustomInput from "./CustomInput.vue";
 
-defineProps<{ pending: boolean; errorMessage?: string }>();
+const props = defineProps<{
+  pending: boolean;
+  errorMessage?: string;
+  job?: JobItem;
+}>();
 
 const jobForm = ref<JobItem | null>();
 
@@ -36,6 +40,12 @@ const salary: SelectItem[] = [
   { value: "$70K - $80K", content: "$70K - $80K" },
   { value: "$90K - $100K", content: "$90K - $100K" },
 ];
+
+onMounted(() => {
+  if (props.job) {
+    jobForm.value = props.job;
+  }
+});
 </script>
 
 <template>

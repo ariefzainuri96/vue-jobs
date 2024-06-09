@@ -8,6 +8,7 @@ import JobsDetailPage from "./pages/JobsDetailPage.vue";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { VueQueryPlugin } from "@tanstack/vue-query";
+import EditJobPage from "./pages/EditJobPage.vue";
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
         path: "/jobs/:id",
         name: "Jobs Detail",
         component: JobsDetailPage,
+      },
+      {
+        path: "/edit-job/:id",
+        name: "Edit Jobs",
+        component: EditJobPage,
       },
     ],
   },

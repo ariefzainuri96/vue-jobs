@@ -73,15 +73,15 @@
     {
       "id": "2887",
       "type": "Full-Time",
-      "title": "Vue Developer",
-      "description": "job description",
-      "salary": "$70K - $80K",
+      "title": "Vue Developer Expert",
+      "description": "You have to be vue expert before apply",
+      "salary": "$90K - $100K",
       "location": "Yogyakarta",
       "company": {
-        "name": "Arief SWH#1",
+        "name": "Arief SWH#Main",
         "description": "Place where you grow",
         "contactEmail": "arief-swh#1@gmail.com",
-        "contactPhone": "123"
+        "contactPhone": "12345678"
       }
     }
   ]

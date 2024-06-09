@@ -2,12 +2,13 @@
 import { axiosInstance } from "@/data/axios";
 import { JobItem } from "@/data/model/job-item";
 import { useQuery } from "@tanstack/vue-query";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import MarkerIcon from "vue-material-design-icons/MapMarker.vue";
 import { sleep } from "@/utils/utils";
 import Button from "@/components/ui/button/Button.vue";
 
 const route = useRoute();
+const router = useRouter();
 
 const { data, error, isLoading, refetch } = useQuery({
   queryKey: ["/jobs", route.params.id],
@@ -71,6 +72,7 @@ const { data, error, isLoading, refetch } = useQuery({
         <div class="flex w-full flex-col gap-3 rounded-md bg-white p-4">
           <p class="text-lg font-bold">Manage Job</p>
           <Button
+            @click="router.push(`/edit-job/${data?.id}`)"
             class="rounded-full bg-indigo-700 text-white hover:bg-indigo-800"
             >Edit Job</Button
           >
