@@ -69,6 +69,20 @@
         "contactEmail": "ariefcorp@gmail.com",
         "contactPhone": "085792810600"
       }
+    },
+    {
+      "id": "2887",
+      "type": "Full-Time",
+      "title": "Vue Developer",
+      "description": "job description",
+      "salary": "$70K - $80K",
+      "location": "Yogyakarta",
+      "company": {
+        "name": "Arief SWH#1",
+        "description": "Place where you grow",
+        "contactEmail": "arief-swh#1@gmail.com",
+        "contactPhone": "123"
+      }
     }
   ]
 }

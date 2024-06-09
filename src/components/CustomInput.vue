@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+defineOptions({
+  inheritAttrs: false,
+});
 
 defineProps<{
   variant: "area" | "input";
-  label: string;
-  //   handleChange?: (e: Event) => void;
+  label: string;  
 }>();
-</script>
-
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-};
 </script>
 
 <template>
