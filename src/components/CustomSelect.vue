@@ -16,6 +16,7 @@ defineProps<{
   items: SelectItemType[];
   value?: string;
   handleChange?: (value: string) => void;
+  errorMessage?: string;
 }>();
 </script>
 
@@ -38,5 +39,8 @@ defineProps<{
         </SelectGroup>
       </SelectContent>
     </Select>
+    <p class="text-sm text-red-400" v-show="errorMessage">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>

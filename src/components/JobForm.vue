@@ -5,10 +5,11 @@ import { JobItem } from "@/data/model/job-item";
 import { onMounted, ref } from "vue";
 import Button from "./ui/button/Button.vue";
 import CustomInput from "./CustomInput.vue";
+import { ValidationMessage } from "@/data/model/validation-message";
 
 const props = defineProps<{
   pending: boolean;
-  errorMessage?: string;
+  errorMessage?: ValidationMessage[];
   job?: JobItem;
 }>();
 
@@ -56,6 +57,10 @@ onMounted(() => {
       placeholder="Select Job Type"
       :value="jobForm?.type"
       :handle-change="(value) => (jobForm = { ...jobForm, type: value })"
+      :error-message="
+        (errorMessage ?? []).find((e) => (e.name ?? []).includes('type'))
+          ?.message
+      "
     />
     <CustomInput
       variant="input"
@@ -64,6 +69,10 @@ onMounted(() => {
       placeholder="eg. Vue Developer Expert"
       :value="jobForm?.title"
       @input="handleChange"
+      :error-message="
+        (errorMessage ?? []).find((e) => (e.name ?? []).includes('title'))
+          ?.message
+      "
     />
     <CustomInput
       variant="area"
@@ -72,6 +81,10 @@ onMounted(() => {
       placeholder="Add a description of your job listing"
       :value="jobForm?.description"
       @input="handleChange"
+      :error-message="
+        (errorMessage ?? []).find((e) => (e.name ?? []).includes('description'))
+          ?.message
+      "
     />
     <CustomSelect
       label="Salary"
@@ -79,6 +92,10 @@ onMounted(() => {
       placeholder="Select Salary"
       :value="jobForm?.salary"
       :handle-change="(value) => (jobForm = { ...jobForm, salary: value })"
+      :error-message="
+        (errorMessage ?? []).find((e) => (e.name ?? []).includes('salary'))
+          ?.message
+      "
     />
     <CustomInput
       variant="input"
@@ -87,6 +104,10 @@ onMounted(() => {
       placeholder="Add a location of your job listing"
       :value="jobForm?.location"
       @input="handleChange"
+      :error-message="
+        (errorMessage ?? []).find((e) => (e.name ?? []).includes('location'))
+          ?.message
+      "
     />
     <p class="mt-2 text-xl font-semibold">Company Info</p>
     <CustomInput
@@ -96,6 +117,13 @@ onMounted(() => {
       placeholder="Add a company name of your job listing"
       :value="jobForm?.company?.name"
       @input="handleCompanyChange"
+      :error-message="
+        (errorMessage ?? []).find(
+          (e) =>
+            (e.name ?? []).includes('company') &&
+            (e.name ?? []).includes('name'),
+        )?.message
+      "
     />
     <CustomInput
       variant="area"
@@ -104,6 +132,13 @@ onMounted(() => {
       placeholder="Add a company description of your job listing"
       :value="jobForm?.company?.description"
       @input="handleCompanyChange"
+      :error-message="
+        (errorMessage ?? []).find(
+          (e) =>
+            (e.name ?? []).includes('company') &&
+            (e.name ?? []).includes('description'),
+        )?.message
+      "
     />
     <CustomInput
       variant="input"
@@ -113,6 +148,11 @@ onMounted(() => {
       placeholder="Add a company email of your job listing"
       :value="jobForm?.company?.contactEmail"
       @input="handleCompanyChange"
+      :error-message="
+        (errorMessage ?? []).find((e) =>
+          (e.name ?? []).includes('contactEmail'),
+        )?.message
+      "
     />
     <CustomInput
       variant="input"
@@ -122,10 +162,12 @@ onMounted(() => {
       placeholder="Add a company phone of your job listing"
       :value="jobForm?.company?.contactPhone"
       @input="handleCompanyChange"
+      :error-message="
+        (errorMessage ?? []).find((e) =>
+          (e.name ?? []).includes('contactPhone'),
+        )?.message
+      "
     />
-    <p class="mt-1 text-sm text-red-400" v-show="errorMessage">
-      {{ errorMessage }}
-    </p>
     <Button
       type="submit"
       :disabled="pending"

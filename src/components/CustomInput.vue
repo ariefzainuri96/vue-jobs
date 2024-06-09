@@ -5,7 +5,8 @@ defineOptions({
 
 defineProps<{
   variant: "area" | "input";
-  label: string;  
+  label: string;
+  errorMessage?: string;
 }>();
 </script>
 
@@ -22,5 +23,8 @@ defineProps<{
       class="rounded-md border-[1px] border-slate-200 p-2"
       v-show="variant === 'area'"
     />
+    <p class="text-sm text-red-400" v-show="errorMessage">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>

@@ -2,14 +2,19 @@
 import JobForm from "@/components/JobForm.vue";
 import { axiosInstance } from "@/data/axios";
 import { JobItem } from "@/data/model/job-item";
+import { ValidationMessage } from "@/data/model/validation-message";
+import { jobSchema } from "@/data/schemas/job-schema";
 import { sleep } from "@/utils/utils";
 import { showSimpleToast } from "@/utils/utils";
 import { useMutation } from "@tanstack/vue-query";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const { isPending, error, mutate } = useMutation({
+const errorMessage = ref<ValidationMessage[]>();
+
+const { isPending, mutate: addJob } = useMutation({
   mutationKey: ["/jobs"],
   mutationFn: async (job) => {
     await sleep(1000);
@@ -29,11 +34,33 @@ const { isPending, error, mutate } = useMutation({
       title: "Error!",
       description: `${e}`,
     });
+
+    // set error for last input
+    errorMessage.value = [{ message: "Error!", name: ["contactPhone"] }];
   },
 });
 
 const submitForm = (jobForm: JobItem) => {
-  mutate(JSON.parse(JSON.stringify(jobForm)));
+  errorMessage.value = [];
+
+  const validation = jobSchema.safeParse(jobForm);
+
+  if (!validation.success) {
+    const { errors: err } = validation.error;
+
+    console.log(err);
+
+    errorMessage.value = err.map((element) => {
+      return {
+        message: element.message,
+        name: element.path,
+      };
+    });
+
+    return;
+  }
+
+  addJob(JSON.parse(JSON.stringify(jobForm)));
 };
 </script>
 
@@ -48,7 +75,7 @@ const submitForm = (jobForm: JobItem) => {
       <JobForm
         @submit-form="submitForm"
         :pending="isPending"
-        :error-message="error?.message"
+        :error-message="errorMessage"
       />
     </div>
   </div>

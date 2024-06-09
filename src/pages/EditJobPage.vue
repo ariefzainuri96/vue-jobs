@@ -2,15 +2,23 @@
 import JobForm from "@/components/JobForm.vue";
 import { axiosInstance } from "@/data/axios";
 import { JobItem } from "@/data/model/job-item";
+import { ValidationMessage } from "@/data/model/validation-message";
+import { jobSchema } from "@/data/schemas/job-schema";
 import { sleep } from "@/utils/utils";
 import { showSimpleToast } from "@/utils/utils";
 import { useMutation, useQuery } from "@tanstack/vue-query";
+import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
 
-const { isPending, error, mutate } = useMutation({
+const errorMessage = ref<ValidationMessage[]>();
+const {
+  isPending,
+  error,
+  mutate: updateJob,
+} = useMutation({
   mutationKey: ["/jobs"],
   mutationFn: async (job: JobItem) => {
     await sleep(1000);
@@ -49,6 +57,27 @@ const { data, isError, isLoading, refetch } = useQuery({
     ).data;
   },
 });
+
+const submitForm = (jobForm: JobItem) => {
+  errorMessage.value = [];
+
+  const validation = jobSchema.safeParse(jobForm);
+
+  if (!validation.success) {
+    const { errors: err } = validation.error;
+
+    errorMessage.value = err.map((element) => {
+      return {
+        message: element.message,
+        name: element.path,
+      };
+    });
+
+    return;
+  }
+
+  updateJob(JSON.parse(JSON.stringify(jobForm)));
+};
 </script>
 
 <template>
@@ -66,10 +95,11 @@ const { data, isError, isLoading, refetch } = useQuery({
         <p class="self-center text-2xl font-bold">Edit Job</p>
         <JobForm
           @submit-form="
-            (jobForm: JobItem) => mutate(JSON.parse(JSON.stringify(jobForm)))
+            (jobForm: JobItem) =>
+              submitForm(JSON.parse(JSON.stringify(jobForm)))
           "
           :pending="isPending"
-          :error-message="error?.message"
+          :error-message="errorMessage"
           :job="data"
         />
       </div>
