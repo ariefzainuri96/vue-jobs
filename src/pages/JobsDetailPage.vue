@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { ref } from "vue";
+import JobDetailSkeleton from "@/components/shimmer/JobDetailSkeleton.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -64,7 +65,7 @@ const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
 
 <template>
   <div class="h-full w-full overflow-y-auto bg-blue-50">
-    <div v-show="isLoading">Loading...</div>
+    <JobDetailSkeleton v-show="isLoading" />
     <div v-show="error" @click="refetch()" v-if="error">
       {{ error?.message + ", Tap to retry" }}
     </div>
@@ -83,7 +84,7 @@ const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
         </div>
         <div class="flex w-full flex-col gap-2 rounded-md bg-white p-4">
           <p class="text-sm font-bold text-indigo-700">Job Description</p>
-          <p class="text-sm">{{ data?.description }}</p>
+          <p class="whitespace-pre-line text-sm">{{ data?.description }}</p>
           <p class="text-sm font-bold text-indigo-700">Salary</p>
           <p class="text-sm">{{ data?.salary }}</p>
         </div>

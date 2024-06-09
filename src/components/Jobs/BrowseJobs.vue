@@ -4,6 +4,7 @@ import { JobItem } from "@/data/model/job-item";
 import { useQuery } from "@tanstack/vue-query";
 import JobsItem from "./JobsItem.vue";
 import { sleep } from "@/utils/utils";
+import BrowseJobSkeleton from "../shimmer/BrowseJobSkeleton.vue";
 
 const props = defineProps<{
   isHome: boolean;
@@ -24,15 +25,16 @@ const { data, error, isLoading, refetch } = useQuery({
 </script>
 
 <template>
-  <div class="flex flex-col items-center bg-indigo-50 py-8">
-    <p class="mb-6 text-3xl font-bold text-indigo-600">
+  <div class="flex flex-col bg-indigo-50 py-8">
+    <p class="mb-6 self-center text-3xl font-bold text-indigo-600">
       {{ isHome ? "Recent Jobs" : "Browse Jobs" }}
     </p>
 
     <!-- loading -->
-    <div v-show="isLoading" class="flex items-center justify-center">
-      Loading...
+    <div v-show="isLoading" class="grid grid-cols-1 gap-4 px-4 sm:grid-cols-3">
+      <BrowseJobSkeleton v-for="(_, index) in [1, 2, 3]" :key="index" />
     </div>
+
     <!-- error -->
     <div
       @click="refetch()"
@@ -41,7 +43,7 @@ const { data, error, isLoading, refetch } = useQuery({
     >
       {{ error?.message + ", Tap to retry" }}
     </div>
-    <div class="grid grid-cols-1 gap-4 px-4 sm:grid-cols-3">
+    <div v-show="data" class="grid grid-cols-1 gap-4 px-4 sm:grid-cols-3">
       <JobsItem
         v-for="job in isHome ? data?.slice(0, 3) : data"
         :key="job.id"
