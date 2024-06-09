@@ -13,6 +13,7 @@ export const showSimpleToast = ({ title, description }: TSimpleToast) => {
     title: title,
     description: description,
     duration: 2000,
+    class: "border-none bg-white",
   });
 
   setTimeout(() => dismiss(), 2000);

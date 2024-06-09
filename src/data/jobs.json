@@ -55,34 +55,6 @@
         "contactEmail": "contact@consecteturadipisicing.com",
         "contactPhone": "085792810600"
       }
-    },
-    {
-      "id": "c707",
-      "type": "Part-Time",
-      "title": "Flutter Developers",
-      "description": "Please follow along below requirement",
-      "salary": "$70K - $80K",
-      "location": "Yogyakarta",
-      "company": {
-        "name": "Arief Corp",
-        "description": "This is company description, please follow along with us",
-        "contactEmail": "ariefcorp@gmail.com",
-        "contactPhone": "085792810600"
-      }
-    },
-    {
-      "id": "2887",
-      "type": "Full-Time",
-      "title": "Vue Developer Expert",
-      "description": "You have to be vue expert before apply",
-      "salary": "$90K - $100K",
-      "location": "Yogyakarta",
-      "company": {
-        "name": "Arief SWH#Main",
-        "description": "Place where you grow",
-        "contactEmail": "arief-swh#1@gmail.com",
-        "contactPhone": "12345678"
-      }
     }
   ]
 }

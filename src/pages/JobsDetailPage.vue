@@ -1,14 +1,27 @@
 <script setup lang="ts">
 import { axiosInstance } from "@/data/axios";
 import { JobItem } from "@/data/model/job-item";
-import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useRoute, useRouter } from "vue-router";
 import MarkerIcon from "vue-material-design-icons/MapMarker.vue";
-import { sleep } from "@/utils/utils";
+import { showSimpleToast, sleep } from "@/utils/utils";
 import Button from "@/components/ui/button/Button.vue";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { ref } from "vue";
 
 const route = useRoute();
 const router = useRouter();
+
+const showDeleteAlert = ref(false);
 
 const { data, error, isLoading, refetch } = useQuery({
   queryKey: ["/jobs", route.params.id],
@@ -19,6 +32,32 @@ const { data, error, isLoading, refetch } = useQuery({
         signal,
       })
     ).data;
+  },
+});
+
+const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
+  mutationKey: ["/jobs"],
+  mutationFn: async (job: JobItem) => {
+    // close alert dialog
+    showDeleteAlert.value = false;
+
+    await sleep(1000);
+    const data = (await axiosInstance.delete<JobItem>(`/jobs/${job?.id}`)).data;
+    return data;
+  },
+  onSuccess: (data) => {
+    showSimpleToast({
+      title: "Success!",
+      description: `Berhasil menghapus job ${data?.title}`,
+    });
+
+    router.back();
+  },
+  onError: (e) => {
+    showSimpleToast({
+      title: "Error!",
+      description: `${e}`,
+    });
   },
 });
 </script>
@@ -76,11 +115,35 @@ const { data, error, isLoading, refetch } = useQuery({
             class="rounded-full bg-indigo-700 text-white hover:bg-indigo-800"
             >Edit Job</Button
           >
-          <Button class="rounded-full bg-red-600 text-white hover:bg-red-700"
-            >Delete Job</Button
+          <Button
+            :disabled="isDeletingJob"
+            :aria-disabled="isDeletingJob"
+            @click="showDeleteAlert = true"
+            class="rounded-full bg-red-600 text-white hover:bg-red-700"
+            >{{ isDeletingJob ? "Deleting..." : "Delete Job" }}</Button
           >
         </div>
       </div>
+      <!-- alert dialog -->
+      <AlertDialog :open="showDeleteAlert" @close="showDeleteAlert = false">
+        <AlertDialogContent class="bg-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the job
+              and all related data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel @click="showDeleteAlert = false"
+              >Cancel</AlertDialogCancel
+            >
+            <AlertDialogAction @click="deleteJob(data!)"
+              >Delete</AlertDialogAction
+            >
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   </div>
 </template>
