@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { twMerge } from "tailwind-merge";
+import Menu from "vue-material-design-icons/Menu.vue";
 </script>
 
 <template>
@@ -13,11 +14,14 @@ import { twMerge } from "tailwind-merge";
         </router-link>
         <p class="flex-1 text-2xl font-bold text-white">Vue Jobs</p>
       </div>
+      <button @click="$emit('toggle-drawer')">
+        <Menu class="size-4 text-white" />
+      </button>
       <router-link
         to="/jobs"
         :class="
           twMerge(
-            `rounded-md p-2 text-lg text-white duration-200 hover:bg-black`,
+            `hidden rounded-md p-2 text-lg text-white duration-200 hover:bg-black sm:block`,
             $route.path === '/jobs' ? 'bg-black' : '',
           )
         "
@@ -28,7 +32,7 @@ import { twMerge } from "tailwind-merge";
         to="/add-job"
         :class="
           twMerge(
-            `rounded-md p-2 text-lg text-white duration-200 hover:bg-black`,
+            `hidden rounded-md p-2 text-lg text-white duration-200 hover:bg-black sm:block`,
             $route.path === '/add-job' ? 'bg-black' : '',
           )
         "

@@ -16,11 +16,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import JobDetailSkeleton from "@/components/shimmer/JobDetailSkeleton.vue";
+import BackButton from "@/components/BackButton.vue";
 
 const route = useRoute();
 const router = useRouter();
+const scrollRef = ref<HTMLDivElement | null>();
 
 const showDeleteAlert = ref(false);
 
@@ -34,6 +36,14 @@ const { data, error, isLoading, refetch } = useQuery({
       })
     ).data;
   },
+});
+
+watchEffect(() => {
+  if (localStorage.getItem("jobDetailScrollPosition") && scrollRef.value) {
+    scrollRef.value.scrollTop = parseInt(
+      `${localStorage.getItem("jobDetailScrollPosition")}`,
+    );
+  }
 });
 
 const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
@@ -61,10 +71,22 @@ const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
     });
   },
 });
+
+const onScroll = (e: Event) => {
+  localStorage.setItem(
+    "jobDetailScrollPosition",
+    `${(e.target as HTMLDivElement).scrollTop}`,
+  );
+};
 </script>
 
 <template>
-  <div class="h-full w-full overflow-y-auto bg-blue-50">
+  <div
+    :onScroll="onScroll"
+    ref="scrollRef"
+    class="h-full w-full overflow-y-auto bg-blue-50"
+  >
+    <BackButton class="ml-4 mt-4" />
     <JobDetailSkeleton v-show="isLoading" />
     <div v-show="error" @click="refetch()" v-if="error">
       {{ error?.message + ", Tap to retry" }}
@@ -127,7 +149,7 @@ const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
       </div>
       <!-- alert dialog -->
       <AlertDialog :open="showDeleteAlert" @close="showDeleteAlert = false">
-        <AlertDialogContent class="bg-white">
+        <AlertDialogContent class="w-[90vw] rounded-lg bg-white">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>

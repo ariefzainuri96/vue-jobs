@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BackButton from "@/components/BackButton.vue";
 import JobForm from "@/components/JobForm.vue";
 import { axiosInstance } from "@/data/axios";
 import { JobItem } from "@/data/model/job-item";
@@ -81,11 +82,10 @@ const submitForm = (jobForm: JobItem) => {
 </script>
 
 <template>
-  <div
-    class="flex h-full flex-col items-center overflow-y-auto bg-blue-50 px-4 py-5"
-  >
+  <div class="flex h-full flex-col items-center overflow-y-auto bg-blue-50 p-4">
+    <BackButton class="self-start" />
     <div
-      class="flex w-full flex-col items-start rounded-md bg-white p-4 md:max-w-[500px]"
+      class="mt-4 flex w-full flex-col items-start rounded-md bg-white p-4 md:max-w-[500px]"
     >
       <div v-show="isLoading">Loading...</div>
       <div v-show="isError" @click="refetch()">
