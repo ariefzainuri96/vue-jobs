@@ -14,7 +14,7 @@ import Menu from "vue-material-design-icons/Menu.vue";
         </router-link>
         <p class="flex-1 text-2xl font-bold text-white">Vue Jobs</p>
       </div>
-      <button @click="$emit('toggle-drawer')">
+      <button class="block sm:hidden" @click="$emit('toggle-drawer')">
         <Menu class="size-4 text-white" />
       </button>
       <router-link
