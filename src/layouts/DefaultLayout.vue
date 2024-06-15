@@ -12,51 +12,51 @@ const router = useRouter();
 </script>
 
 <template>
-  <div class="flex h-screen w-screen flex-col overflow-hidden bg-white">
-    <Navbar @toggle-drawer="isDrawerOpen = !isDrawerOpen" />
-    <div class="w-full flex-1 overflow-y-auto">
-      <RouterView />
+  <div class="h-screen w-screen overflow-hidden bg-white">
+    <div class="flex h-full w-full flex-col overflow-hidden">
+      <Navbar @toggle-drawer="isDrawerOpen = !isDrawerOpen" />
+      <RouterView class="w-full flex-1" />
+      <Toaster />
+      <Sheet :open="isDrawerOpen" @close="isDrawerOpen = false">
+        <SheetContent
+          :onInteractOutside="() => (isDrawerOpen = false)"
+          class="flex flex-col items-start bg-white"
+          side="right"
+        >
+          <Button
+            @click="
+              () => {
+                isDrawerOpen = false;
+                router.push('/jobs');
+              }
+            "
+            :class="
+              twMerge(
+                `rounded-md p-2 text-lg text-black duration-200`,
+                $route.path === '/jobs' ? 'bg-black text-white' : '',
+              )
+            "
+          >
+            Jobs
+          </Button>
+          <Button
+            @click="
+              () => {
+                isDrawerOpen = false;
+                router.push('/add-job');
+              }
+            "
+            :class="
+              twMerge(
+                `rounded-md p-2 text-lg text-black duration-200`,
+                $route.path === '/add-job' ? 'bg-black text-white' : '',
+              )
+            "
+          >
+            Add Job
+          </Button>
+        </SheetContent>
+      </Sheet>
     </div>
-    <Toaster />
-    <Sheet :open="isDrawerOpen" @close="isDrawerOpen = false">
-      <SheetContent
-        :onInteractOutside="() => (isDrawerOpen = false)"
-        class="flex flex-col items-start bg-white"
-        side="right"
-      >
-        <Button
-          @click="
-            () => {
-              isDrawerOpen = false;
-              router.push('/jobs');
-            }
-          "
-          :class="
-            twMerge(
-              `rounded-md p-2 text-lg text-black duration-200`,
-              $route.path === '/jobs' ? 'bg-black text-white' : '',
-            )
-          "
-        >
-          Jobs
-        </Button>
-        <Button
-          @click="
-            () => {
-              isDrawerOpen = false;
-              router.push('/add-job');
-            }
-          "
-          :class="
-            twMerge(
-              `rounded-md p-2 text-lg text-black duration-200`,
-              $route.path === '/add-job' ? 'bg-black text-white' : '',
-            )
-          "
-        >
-          Add Job
-        </Button>
-      </SheetContent>
-    </Sheet>
   </div>
 </template>
