@@ -14,7 +14,9 @@ const router = useRouter();
 <template>
   <div class="flex h-screen w-screen flex-col overflow-hidden bg-white">
     <Navbar @toggle-drawer="isDrawerOpen = !isDrawerOpen" />
-    <RouterView class="w-full flex-1" />
+    <div class="w-full flex-1 overflow-y-auto">
+      <RouterView />
+    </div>
     <Toaster />
     <Sheet :open="isDrawerOpen" @close="isDrawerOpen = false">
       <SheetContent
