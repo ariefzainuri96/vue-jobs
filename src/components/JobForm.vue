@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { SelectItem } from "@/data/model/select-item";
 import CustomSelect from "./CustomSelect.vue";
-import { JobItem } from "@/data/model/job-item";
 import { onMounted, ref } from "vue";
 import Button from "./ui/button/Button.vue";
 import CustomInput from "./CustomInput.vue";
 import { ValidationMessage } from "@/data/model/validation-message";
+import { JobItem } from "@/data/responses/jobs-response";
 
 const props = defineProps<{
   pending: boolean;
