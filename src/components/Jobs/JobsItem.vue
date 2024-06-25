@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { JobItem } from "@/data/model/job-item";
 import { computed, ref } from "vue";
 import MarkerIcon from "vue-material-design-icons/MapMarker.vue";
 import Button from "../ui/button/Button.vue";
 import { useRouter } from "vue-router";
+import { JobItem } from "@/data/responses/jobs-response";
 
 const router = useRouter();
 const showMore = ref(false);
@@ -21,7 +21,7 @@ const description = computed(() => {
 // create function to route to detail page
 const routeToDetail = () => {
   router.push({
-    path: `/jobs/${props.job.id}`,
+    path: `/jobs/${props.job._id}`,
   });
 };
 </script>

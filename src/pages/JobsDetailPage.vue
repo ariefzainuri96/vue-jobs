@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { axiosInstance } from "@/data/axios";
-import { JobItem } from "@/data/model/job-item";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useRoute, useRouter } from "vue-router";
 import MarkerIcon from "vue-material-design-icons/MapMarker.vue";
-import { showSimpleToast, sleep } from "@/utils/utils";
+import { showSimpleToast } from "@/utils/utils";
 import Button from "@/components/ui/button/Button.vue";
 import {
   AlertDialog,
@@ -19,6 +18,8 @@ import {
 import { ref, watchEffect } from "vue";
 import JobDetailSkeleton from "@/components/shimmer/JobDetailSkeleton.vue";
 import BackButton from "@/components/BackButton.vue";
+import { JobsDetailResponse } from "@/data/responses/jobs-detail-response";
+import { JobItem } from "@/data/responses/jobs-response";
 
 const route = useRoute();
 const router = useRouter();
@@ -29,12 +30,11 @@ const showDeleteAlert = ref(false);
 const { data, error, isLoading, refetch } = useQuery({
   queryKey: ["/jobs", route.params.id],
   queryFn: async ({ signal }) => {
-    await sleep(1000);
     return (
-      await axiosInstance.get<JobItem>(`/jobs/${route.params.id}`, {
+      await axiosInstance.get<JobsDetailResponse>(`/jobs/${route.params.id}`, {
         signal,
       })
-    ).data;
+    ).data.data;
   },
 });
 
@@ -46,15 +46,17 @@ watchEffect(() => {
   }
 });
 
+// delete job
 const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
   mutationKey: ["/jobs"],
   mutationFn: async (job: JobItem) => {
     // close alert dialog
     showDeleteAlert.value = false;
 
-    await sleep(1000);
-    const data = (await axiosInstance.delete<JobItem>(`/jobs/${job?.id}`)).data;
-    return data;
+    const data = (
+      await axiosInstance.delete<JobsDetailResponse>(`/jobs/${job?._id}`)
+    ).data;
+    return data.data;
   },
   onSuccess: (data) => {
     showSimpleToast({
@@ -134,7 +136,7 @@ const onScroll = (e: Event) => {
         <div class="flex w-full flex-col gap-3 rounded-md bg-white p-4">
           <p class="text-lg font-bold">Manage Job</p>
           <Button
-            @click="router.push(`/edit-job/${data?.id}`)"
+            @click="router.push(`/edit-job/${data?._id}`)"
             class="rounded-full bg-indigo-700 text-white hover:bg-indigo-800"
             >Edit Job</Button
           >

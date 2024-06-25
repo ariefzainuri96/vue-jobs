@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import JobForm from "@/components/JobForm.vue";
 import { axiosInstance } from "@/data/axios";
-import { JobItem } from "@/data/model/job-item";
 import { ValidationMessage } from "@/data/model/validation-message";
+import { JobsDetailResponse } from "@/data/responses/jobs-detail-response";
+import { JobItem } from "@/data/responses/jobs-response";
 import { jobSchema } from "@/data/schemas/job-schema";
-import { sleep } from "@/utils/utils";
 import { showSimpleToast } from "@/utils/utils";
 import { useMutation } from "@tanstack/vue-query";
 import { ref } from "vue";
@@ -17,9 +17,9 @@ const errorMessage = ref<ValidationMessage[]>();
 const { isPending, mutate: addJob } = useMutation({
   mutationKey: ["/jobs"],
   mutationFn: async (job) => {
-    await sleep(1000);
-    const data = (await axiosInstance.post<JobItem>("/jobs", job)).data;
-    return data;
+    const data = (await axiosInstance.post<JobsDetailResponse>("/jobs", job))
+      .data;
+    return data.data;
   },
   onSuccess: (data) => {
     showSimpleToast({

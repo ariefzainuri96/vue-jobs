@@ -2,10 +2,10 @@
 import BackButton from "@/components/BackButton.vue";
 import JobForm from "@/components/JobForm.vue";
 import { axiosInstance } from "@/data/axios";
-import { JobItem } from "@/data/model/job-item";
 import { ValidationMessage } from "@/data/model/validation-message";
+import { JobsDetailResponse } from "@/data/responses/jobs-detail-response";
+import { JobItem } from "@/data/responses/jobs-response";
 import { jobSchema } from "@/data/schemas/job-schema";
-import { sleep } from "@/utils/utils";
 import { showSimpleToast } from "@/utils/utils";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { ref } from "vue";
@@ -22,14 +22,13 @@ const {
 } = useMutation({
   mutationKey: ["/jobs"],
   mutationFn: async (job: JobItem) => {
-    await sleep(1000);
     const data = (
-      await axiosInstance.put<JobItem>(
-        `/jobs/${job?.id}`,
+      await axiosInstance.put<JobsDetailResponse>(
+        `/jobs/${job?._id}`,
         JSON.parse(JSON.stringify(job)),
       )
     ).data;
-    return data;
+    return data.data;
   },
   onSuccess: (data) => {
     showSimpleToast({
@@ -50,12 +49,11 @@ const {
 const { data, isError, isLoading, refetch } = useQuery({
   queryKey: ["/jobs", route.params.id],
   queryFn: async ({ signal }) => {
-    await sleep(1000);
     return (
-      await axiosInstance.get<JobItem>(`/jobs/${route.params.id}`, {
+      await axiosInstance.get<JobsDetailResponse>(`/jobs/${route.params.id}`, {
         signal,
       })
-    ).data;
+    ).data.data;
   },
 });
 

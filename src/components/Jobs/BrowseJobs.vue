@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { axiosInstance } from "@/data/axios";
-import { JobItem } from "@/data/model/job-item";
 import { useQuery } from "@tanstack/vue-query";
 import JobsItem from "./JobsItem.vue";
-import { sleep } from "@/utils/utils";
 import BrowseJobSkeleton from "../shimmer/BrowseJobSkeleton.vue";
+import { JobsResponse } from "@/data/responses/jobs-response";
 
 const props = defineProps<{
   isHome: boolean;
@@ -13,13 +12,7 @@ const props = defineProps<{
 const { data, error, isLoading, refetch } = useQuery({
   queryKey: [`${props.isHome ? "/jobs" : "/jobs/browse"}`],
   queryFn: async () => {
-    await sleep(1000);
-
-    if (props.isHome) {
-      return (await axiosInstance.get<JobItem[]>("/jobs")).data.reverse();
-    }
-
-    return (await axiosInstance.get<JobItem[]>("/jobs")).data;
+    return (await axiosInstance.get<JobsResponse>("/jobs")).data.data;
   },
 });
 </script>
@@ -45,8 +38,10 @@ const { data, error, isLoading, refetch } = useQuery({
     </div>
     <div v-show="data" class="grid grid-cols-1 gap-4 px-4 sm:grid-cols-3">
       <JobsItem
-        v-for="job in isHome ? data?.slice(0, 3) : data"
-        :key="job.id"
+        v-for="job in isHome && (data ?? []).length > 3
+          ? data?.slice(data.length - 3, data.length)
+          : data"
+        :key="job._id"
         :job="job"
       />
     </div>
