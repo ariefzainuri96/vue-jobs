@@ -12,6 +12,7 @@ export default defineConfig({
     },
   },
   plugins: [vue()],
+  base: "/vue-jobs/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

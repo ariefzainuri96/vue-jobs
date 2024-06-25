@@ -2,10 +2,13 @@
   "name": "vue-jobs",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://ariefzainuri96.github.io/vue-jobs/",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "server": "json-server --watch src/data/jobs.json --port 8001"
   },
@@ -31,6 +34,7 @@
     "@types/node": "^20.14.1",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
+    "gh-pages": "^6.1.1",
     "postcss": "^8.4.38",
     "prettier": "^3.3.0",
     "prettier-plugin-tailwindcss": "^0.6.1",
