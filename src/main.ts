@@ -6,16 +6,60 @@ import JobsPage from "./pages/JobsPage.vue";
 import DashboardPage from "./pages/dashboard/DashboardPage.vue";
 import JobsDetailPage from "./pages/JobsDetailPage.vue";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  onBeforeRouteUpdate,
+} from "vue-router";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import EditJobPage from "./pages/EditJobPage.vue";
+import LoginPage from "./pages/LoginPage.vue";
+import RegisterPage from "./pages/RegisterPage.vue";
+
+const beforeEnterReturn = (to) => {
+  const userStorage = localStorage.getItem("user");
+
+  if (userStorage) {
+    console.log(
+      `route to login or register but user is already logged in ${to.path}`,
+    );
+
+    return {
+      name: "Dashboard",
+      params: {
+        pathMatch: to.path.split("/")[1],
+      },
+      hash: to.hash,
+      query: to.query,
+    };
+  }
+};
 
 const routes = [
   {
+    path: "/login",
+    name: "Login",
+    component: LoginPage,
+    beforeEnter: (to) => beforeEnterReturn(to),
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: RegisterPage,
+    beforeEnter: (to) => beforeEnterReturn(to),
+  },
+  {
     // this is layout
     path: "/",
-    name: "DefaultLayout",
     component: DefaultLayout,
+    meta: {
+      requiresAuth: true,
+    },
+    // onBeforeRouteUpdate: (to, from, next) => {
+    //   if (to.path === "/login" || to.path === "/register") {
+    //     next(false);
+    //   }
+    // },
     // below children will be rendered inside layout
     children: [
       {
@@ -24,22 +68,22 @@ const routes = [
         component: DashboardPage,
       },
       {
-        path: "/add-job",
+        path: "add-job",
         name: "Add Job",
         component: AddJobPage,
       },
       {
-        path: "/jobs",
+        path: "jobs",
         name: "Jobs",
         component: JobsPage,
       },
       {
-        path: "/jobs/:id",
+        path: "jobs/:id",
         name: "Jobs Detail",
         component: JobsDetailPage,
       },
       {
-        path: "/edit-job/:id",
+        path: "edit-job/:id",
         name: "Edit Jobs",
         component: EditJobPage,
       },
@@ -50,6 +94,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const userStorage = localStorage.getItem("user");
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!userStorage && to.path !== "/login") {
+      next({ path: "/login" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 createApp(App).use(VueQueryPlugin).use(router).mount("#app");

@@ -7,8 +7,8 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const divRef = ref<HTMLDivElement | undefined>();
-const onAddJobClick = () => router.push("/add-job");
-const onBrowseJobsClick = () => router.push("/jobs");
+const onAddJobClick = () => router.push("add-job");
+const onBrowseJobsClick = () => router.push("jobs");
 
 const onScrollEvent = (e: Event) => {
   localStorage.setItem(

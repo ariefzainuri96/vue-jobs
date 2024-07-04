@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { twMerge } from "tailwind-merge";
 import Menu from "vue-material-design-icons/Menu.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const handleLogout = (e: MouseEvent) => {
+  e.preventDefault();
+
+  localStorage.removeItem("user");
+  router.replace("/login");
+};
 </script>
 
 <template>
@@ -18,27 +28,38 @@ import Menu from "vue-material-design-icons/Menu.vue";
         <Menu class="size-4 text-white" />
       </button>
       <router-link
-        to="/jobs"
+        to="jobs"
         :class="
           twMerge(
             `hidden rounded-md p-2 text-lg text-white duration-200 hover:bg-black sm:block`,
-            $route.path === '/jobs' ? 'bg-black' : '',
+            $route.path === 'jobs' ? 'bg-black' : '',
           )
         "
       >
         Jobs
       </router-link>
       <router-link
-        to="/add-job"
+        to="add-job"
         :class="
           twMerge(
             `hidden rounded-md p-2 text-lg text-white duration-200 hover:bg-black sm:block`,
-            $route.path === '/add-job' ? 'bg-black' : '',
+            $route.path === 'add-job' ? 'bg-black' : '',
           )
         "
       >
         Add Job
       </router-link>
+      <button
+        to=""
+        @click="handleLogout($event)"
+        :class="
+          twMerge(
+            `hidden rounded-md p-2 text-lg text-white duration-200 hover:bg-black sm:block`,
+          )
+        "
+      >
+        Logout
+      </button>
     </div>
   </section>
 </template>

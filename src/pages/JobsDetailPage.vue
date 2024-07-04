@@ -31,9 +31,12 @@ const { data, error, isLoading, refetch } = useQuery({
   queryKey: ["/jobs", route.params.id],
   queryFn: async ({ signal }) => {
     return (
-      await axiosInstance.get<JobsDetailResponse>(`/jobs/${route.params.id}`, {
-        signal,
-      })
+      await axiosInstance().get<JobsDetailResponse>(
+        `/jobs/${route.params.id}`,
+        {
+          signal,
+        },
+      )
     ).data.data;
   },
 });
@@ -54,7 +57,7 @@ const { isPending: isDeletingJob, mutate: deleteJob } = useMutation({
     showDeleteAlert.value = false;
 
     const data = (
-      await axiosInstance.delete<JobsDetailResponse>(`/jobs/${job?._id}`)
+      await axiosInstance().delete<JobsDetailResponse>(`/jobs/${job?._id}`)
     ).data;
     return data.data;
   },

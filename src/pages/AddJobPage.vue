@@ -17,7 +17,7 @@ const errorMessage = ref<ValidationMessage[]>();
 const { isPending, mutate: addJob } = useMutation({
   mutationKey: ["/jobs"],
   mutationFn: async (job) => {
-    const data = (await axiosInstance.post<JobsDetailResponse>("/jobs", job))
+    const data = (await axiosInstance().post<JobsDetailResponse>("/jobs", job))
       .data;
     return data.data;
   },
@@ -27,7 +27,7 @@ const { isPending, mutate: addJob } = useMutation({
       description: `Berhasil membuat job ${data?.title}`,
     });
 
-    router.push("/jobs");
+    router.push("jobs");
   },
   onError: (e) => {
     showSimpleToast({

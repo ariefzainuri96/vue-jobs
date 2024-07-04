@@ -23,7 +23,7 @@ const {
   mutationKey: ["/jobs"],
   mutationFn: async (job: JobItem) => {
     const data = (
-      await axiosInstance.put<JobsDetailResponse>(
+      await axiosInstance().put<JobsDetailResponse>(
         `/jobs/${job?._id}`,
         JSON.parse(JSON.stringify(job)),
       )
@@ -50,9 +50,12 @@ const { data, isError, isLoading, refetch } = useQuery({
   queryKey: ["/jobs", route.params.id],
   queryFn: async ({ signal }) => {
     return (
-      await axiosInstance.get<JobsDetailResponse>(`/jobs/${route.params.id}`, {
-        signal,
-      })
+      await axiosInstance().get<JobsDetailResponse>(
+        `/jobs/${route.params.id}`,
+        {
+          signal,
+        },
+      )
     ).data.data;
   },
 });

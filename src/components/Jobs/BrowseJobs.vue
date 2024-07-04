@@ -12,7 +12,7 @@ const props = defineProps<{
 const { data, error, isLoading, refetch } = useQuery({
   queryKey: [`${props.isHome ? "/jobs" : "/jobs/browse"}`],
   queryFn: async () => {
-    return (await axiosInstance.get<JobsResponse>("/jobs")).data.data;
+    return (await axiosInstance().get<JobsResponse>("/jobs")).data.data;
   },
 });
 </script>

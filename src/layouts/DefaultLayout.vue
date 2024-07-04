@@ -27,13 +27,13 @@ const router = useRouter();
             @click="
               () => {
                 isDrawerOpen = false;
-                router.push('/jobs');
+                router.push('jobs');
               }
             "
             :class="
               twMerge(
                 `rounded-md p-2 text-lg text-black duration-200`,
-                $route.path === '/jobs' ? 'bg-black text-white' : '',
+                $route.path === 'jobs' ? 'bg-black text-white' : '',
               )
             "
           >
@@ -43,13 +43,13 @@ const router = useRouter();
             @click="
               () => {
                 isDrawerOpen = false;
-                router.push('/add-job');
+                router.push('add-job');
               }
             "
             :class="
               twMerge(
                 `rounded-md p-2 text-lg text-black duration-200`,
-                $route.path === '/add-job' ? 'bg-black text-white' : '',
+                $route.path === 'add-job' ? 'bg-black text-white' : '',
               )
             "
           >
