@@ -6,11 +6,7 @@ import JobsPage from "./pages/JobsPage.vue";
 import DashboardPage from "./pages/dashboard/DashboardPage.vue";
 import JobsDetailPage from "./pages/JobsDetailPage.vue";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
-import {
-  createRouter,
-  createWebHistory,
-  onBeforeRouteUpdate,
-} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import EditJobPage from "./pages/EditJobPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
@@ -26,9 +22,6 @@ const beforeEnterReturn = (to) => {
 
     return {
       name: "Dashboard",
-      params: {
-        pathMatch: to.path.split("/")[1],
-      },
       hash: to.hash,
       query: to.query,
     };
@@ -55,11 +48,6 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
-    // onBeforeRouteUpdate: (to, from, next) => {
-    //   if (to.path === "/login" || to.path === "/register") {
-    //     next(false);
-    //   }
-    // },
     // below children will be rendered inside layout
     children: [
       {
@@ -96,7 +84,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   const userStorage = localStorage.getItem("user");
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
