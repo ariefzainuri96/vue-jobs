@@ -12,7 +12,7 @@ export const axiosInstance = (useVuePrefix: boolean = true) => {
   }
 
   return axios.create({
-    baseURL: `https://backend-frontend-jobs.vercel.app/${useVuePrefix ? "vue" : ""}`,
+    baseURL: `https://zain-api.xyz/${useVuePrefix ? "vue" : ""}`,
     timeout: 10000,
     headers: {
       "Content-Type": "application/json",

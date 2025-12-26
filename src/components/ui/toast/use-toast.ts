@@ -14,6 +14,8 @@ type ToasterToast = ToastProps & {
   id: string
   title?: string
   description?: StringOrVNode
+  duration?: number
+  open?: boolean
   action?: Component
 }
 
